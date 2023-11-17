@@ -1,47 +1,66 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div id="app" class="container mt-5">
+    <Titulo>Calculadora Aritmética</Titulo>
+    <Entradas :id="'numero1'" :label="'Número 1'" :valor="numero1" @atualizar="atualizarNumero1"></Entradas>
+    <Entradas :id="'numero2'" :label="'Número 2'" :valor="numero2" @atualizar="atualizarNumero2"></Entradas>
+    <div class="col-md-4">
+      <label for="operacao">Operação:</label>
+      <select v-model="operacao" class="form-control" @change="calcular">
+        <option value="+">Soma</option>
+        <option value="-">Subtração</option>
+        <option value="*">Multiplicação</option>
+        <option value="/">Divisão</option>
+      </select>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+    <Resultado :resultado="resultado"></Resultado>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script>
+import Titulo from './components/Titulo.vue';
+import Entradas from './components/Entradas.vue';
+import Resultado from './components/Resultado.vue';
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+export default {
+  components: {
+    Titulo,
+    Entradas,
+    Resultado,
+  },
+  data() {
+    return {
+      numero1: 0,
+      numero2: 0,
+      operacao: "+",
+    };
+  },
+  computed: {
+    resultado() {
+      switch (this.operacao) {
+        case "+": return this.numero1 + this.numero2;
+        case "-": return this.numero1 - this.numero2;
+        case "*": return this.numero1 * this.numero2;
+        case "/": return this.numero1 / this.numero2;
+        default: return 0;
+      }
+    },
+  },
+  methods: {
+    atualizarNumero1(valor) {
+      this.numero1 = parseFloat(valor);
+      this.calcular();
+    },
+    atualizarNumero2(valor) {
+      this.numero2 = parseFloat(valor); 
+      this.calcular();
+    },
+    calcular() {
+ 
+    },
+  },
+};
+</script>
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+<style>
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
